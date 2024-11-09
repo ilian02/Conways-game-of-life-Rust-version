@@ -2,7 +2,7 @@ use rand::Rng;
 
 #[warn(dead_code)]
   
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Copy)]
 enum Cell {
     Alive,
     Dead,
@@ -45,11 +45,72 @@ impl Board {
                     false => self.cells[i][j] = Cell::Dead
                 }
             }
-            println!();
         }
     }
 
-    pub fn generate_next(&self) {
-        todo!();
+    pub fn generate_next(&mut self) {
+        self.generation += 1;
+
+        let mut new_matrix = vec![vec![Cell::Dead; self.size]; self.size];
+
+        for i in 0..self.size {
+            for j in 0..self.size {
+                new_matrix[i][j] = self.get_new_cell_state(i, j);
+            }
+        }
+
+        self.cells = new_matrix;
+    }
+
+    fn get_new_cell_state(&self, i:usize, j:usize) -> Cell{
+
+        let mut counter = 0;
+
+        // top right
+        if i > 0 && j > 0 {
+            counter += (self.cells[i - 1][j - 1] == Cell::Alive) as i32;
+        }
+
+        // top middle
+        if i > 0 {
+            counter += (self.cells[i - 1][j] == Cell::Alive) as i32;
+        }
+
+        // top left
+        if i > 0 && j < self.size - 1 {
+            counter += (self.cells[i - 1][j + 1] == Cell::Alive) as i32;
+        }
+
+        // middle right
+        if j > 0 {
+            counter += (self.cells[i][j - 1] == Cell::Alive) as i32;
+        }
+
+        // middle left
+        if j < self.size - 1 {
+            counter += (self.cells[i][j + 1] == Cell::Alive) as i32;
+        }
+
+        // bottom right
+        if i < self.size - 1 && j > 0 {
+            counter += (self.cells[i + 1][j - 1] == Cell::Alive) as i32;
+        }
+
+        // bottom middle
+        if i < self.size - 1 {
+            counter += (self.cells[i + 1][j] == Cell::Alive) as i32;
+        }
+
+        // bottom left
+        if i < self.size - 1 && j < self.size - 1 {
+            counter += (self.cells[i + 1][j + 1] == Cell::Alive) as i32;
+        }
+
+        match (self.cells[i][j], counter) {
+            (Cell::Alive, 2) => return Cell::Alive,
+            (Cell::Alive, 3) => return Cell::Alive,
+            (Cell::Dead, 3) => return Cell::Alive,
+            (_,_) => return Cell::Dead
+        }
     }
 }
