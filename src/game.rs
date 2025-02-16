@@ -36,7 +36,7 @@ impl ConwaysGame {
         self.grid = new_grid;
     }
 
-    fn live_neighbor_count(&self, x: usize, y: usize) -> usize {
+    pub fn live_neighbor_count(&self, x: usize, y: usize) -> usize {
         let mut count = 0;
         for dy in -1..=1 {
             for dx in -1..=1 {

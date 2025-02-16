@@ -4,7 +4,7 @@ use std::path::Path;
 use std::time::Duration;
 use ggez::input::keyboard::KeyCode;
 
-mod game;
+pub mod game;
 use game::ConwaysGame;
 
 enum GameState {
