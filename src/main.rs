@@ -197,6 +197,15 @@ impl ggez::event::EventHandler<GameError> for State {
 }
 
 
+fn print_rules() {
+    println!("Conways game of life is a cellular automaton, meaning it is played without a player.");
+    println!("There are only 4 rules which every cell follows");
+    println!("1 -> Any live cell with fewer than two live neighbours dies, as if by underpopulation.");
+    println!("2 -> Any live cell with two or three live neighbours lives on to the next generation.");
+    println!("3 -> Any live cell with more than three live neighbours dies, as if by overpopulation.");
+    println!("4 -> Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.");
+}
+
 fn versus_menu(game: &mut State) {
 
     let options = [(16, 30, 30), (16, 100, 30), (32, 150, 45), (64, 200, 60)];
@@ -327,14 +336,11 @@ fn read_file(game: &mut State) -> bool {
     return true;
 }
 
-pub fn print_rules() {
-
-}
-
 
 pub fn main() {
 
     println!("Conways game of life: the game");
+    print_rules();
     println!("Pick mode: \n 1) Freeplay\n 2) Versus");
 
     
